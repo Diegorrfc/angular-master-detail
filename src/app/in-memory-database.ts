@@ -1,12 +1,11 @@
 import { InMemoryDbService } from 'angular-in-memory-web-api';
 import { Observable } from 'rxjs';
 import { Category } from './pages/categories/shared/category.model';
+import { Entry } from './pages/entries/entries/shared/entry.model';
 
 export class InMemoryDataBase implements InMemoryDbService {
-  categories: Category[];
-
   createDb() {
-    const categories = [
+    const categories: Category[] = [
       { id: 1, name: 'diego', description: 'descricao diego' },
       { id: 2, name: 'felix', description: 'descricao diego' },
       { id: 3, name: 'diego', description: 'descricao diego' },
@@ -16,10 +15,24 @@ export class InMemoryDataBase implements InMemoryDbService {
       { id: 7, name: 'diego', description: 'descricao diego' },
       { id: 8, name: 'felix', description: 'descricao diego' },
     ];
-    const products = new Observable<Category>((obs) => {
-      setTimeout(() => this.categories, 1000);
-    });
-    console.log(products);
-    return { categories };
+    const entries: Entry[] = [];
+    // tslint:disable-next-line: prefer-for-of
+    for (let index = 0; index < categories.length; index++) {
+      entries.push(
+        new Entry(
+          ++index,
+          'Gás cozinha' + index,
+          'string' + index,
+          'string' + index,
+          '70,58',
+          '10/20/2020',
+          true,
+          categories[++index].id,
+          categories[++index]
+        )
+      );
+    }
+
+    return { categories, entries };
   }
 }
