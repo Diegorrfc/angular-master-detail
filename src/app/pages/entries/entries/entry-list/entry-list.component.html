@@ -22,23 +22,25 @@
     <tr class="bg-primary text-light">
       <th>Lançamento</th>
       <th>Categoria</th>
-      <th>Valor R$</th>
-      <th>Ações</th>
+      <th class="text-right">Valor R$</th>
+      <th class="text-center">Ações</th>
     </tr>
   </thead>
   <tbody>
     <tr *ngFor="let entry of entries">
       <td>
         <strong>{{entry.name}}</strong><br>
+        <small>{{entry.date}}</small><br>
         <small>{{entry.description}}</small>
       </td>
       <td>
         {{entry.category.name}}
       </td>
-      <td>
-        {{entry.amount}}
+      <td class="text-right">
+        {{entry.amount}}<br>
+        {{entry.paidText()}}
       </td>
-      <td>
+      <td class="text-center">
         <a [routerLink]="['edit',entry.id]" class="btn btn-outline-info btn-sm mr-2"> Editar</a>
         <button (click)="deleteEntry(entry)" class="btn btn-outline-danger btn-sm"> deletar</button>
       </td>

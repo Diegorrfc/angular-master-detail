@@ -13,7 +13,11 @@ export class EntryListComponent implements OnInit {
 
   ngOnInit(): void {
     this.entryService.getAll().subscribe(
-      (entries) => (this.entries = entries),
+      (entries) => {
+        entries.forEach((item) =>
+          this.entries.push(Object.assign(new Entry(), item))
+        );
+      },
       (error) => console.log(error)
     );
   }
