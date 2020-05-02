@@ -25,14 +25,60 @@
 
     <div class="card-body">
       <div class="form-row">
-        <div class="form-group col-md-4">
-          <label for="name">Nome</label>
+        <!--Type-->
+        <div class="form-group col-md-2">
+          <label for="type">Tipo</label>
+          <select name="type" id="type" formControlName="type" class="form-control">
+            <option name="expense">Despesa</option>
+            <option name="revenue">Receita</option>
+          </select>
+          <div class="text-danger" *ngIf="entryForm.get('type').invalid && entryForm.get('type').touched">
+            <div *ngIf="entryForm.get('type').errors.required">O nome é obrigatório</div>
+          </div>
+        </div>
+
+        <!--Lançamento-->
+        <div class="form-group col-md-5">
+          <label for="name">Lançamento</label>
           <input type="text" class="form-control" id="name" formControlName="name">
           <div class="text-danger" *ngIf="entryForm.get('name').invalid && entryForm.get('name').touched">
             <div *ngIf="entryForm.get('name').errors.required">O nome é obrigatório</div>
             <div *ngIf="entryForm.get('name').errors.minlength">Deve ter no minimo 2</div>
           </div>
         </div>
+
+        <!--Amount-->
+        <div class="form-group col-md-3">
+          <label for="amount">Valor Total</label>
+          <div class="input-group">
+            <div class="input-group-pretend">
+              <div class="input-group-text">R$</div>
+            </div>
+            <input [imask]="kl" type="text" class="form-control text-right" id="amount" formControlName="amount">
+          </div>
+          <div class="text-danger" *ngIf="entryForm.get('amount').invalid && entryForm.get('amount').touched">
+            <div *ngIf="entryForm.get('amount').errors.required">O nome é obrigatório</div>
+            <div *ngIf="entryForm.get('amount').errors.minlength">Deve ter no minimo 2</div>
+          </div>
+        </div>
+
+        <!--Date-->
+        <div class="form-group col-md-2">
+          <label for="date">Data</label>
+          <p-calendar id="date" formControlName="date" inputStyleClass="form-control" dataType="string"
+            dateFormat="dd/mm/yy"></p-calendar>
+          <div class="text-danger" *ngIf="entryForm.get('date').invalid && entryForm.get('date').touched">
+            <div *ngIf="entryForm.get('date').errors.required">O nome é obrigatório</div>
+          </div>
+        </div>
+
+      </div>
+      <div class="form-row">
+
+        <!--Name-->
+
+
+        <!--Description-->
         <div class="form-group col-md-8">
           <label for="description">Descrição</label>
           <input type="text" class="form-control" id="description" formControlName="description">

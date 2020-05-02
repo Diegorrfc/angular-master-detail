@@ -25,7 +25,7 @@ export class InMemoryDataBase implements InMemoryDbService {
           'string' + index,
           'string' + index,
           '70,58',
-          '10/20/2020',
+          '10/10/2020',
           true,
           categories[++index].id,
           categories[++index]

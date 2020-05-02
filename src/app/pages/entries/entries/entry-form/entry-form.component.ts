@@ -5,6 +5,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { switchMap } from 'rxjs/operators';
 import { Entry } from '../shared/entry.model';
 import toastr from 'toastr';
+import IMask from 'imask';
 @Component({
   selector: 'app-entry-form',
   templateUrl: './entry-form.component.html',
@@ -12,11 +13,21 @@ import toastr from 'toastr';
 })
 export class EntryFormComponent implements OnInit, AfterContentChecked {
   entryForm: FormGroup;
-  entry: Entry;
+  entry: Entry = new Entry();
   currentAction: string;
   pageTitle: string;
   submitFormButton: boolean;
   serverErrorMessage: string[];
+  kl: any;
+  imaskConfig = {
+    mask: Number,
+    scale: 2,
+    thousandSeparator: '',
+    padFractionalZeros: true,
+    normalizeZeros: true,
+    radix: ',',
+  };
+
   constructor(
     private entryService: EntryService,
     private router: Router,
@@ -28,9 +39,20 @@ export class EntryFormComponent implements OnInit, AfterContentChecked {
     this.setCurrentAction();
     this.builEntryForm();
     this.loadEntry();
+    this.teste();
   }
   ngAfterContentChecked(): void {
     this.setPageTitle();
+  }
+  teste() {
+    this.kl = IMask.createMask({
+      mask: Number,
+      scale: 2,
+      thousandSeparator: '',
+      padFractionalZeros: true,
+      normalizeZeros: true,
+      radix: ',',
+    });
   }
 
   private setCurrentAction() {
@@ -47,8 +69,8 @@ export class EntryFormComponent implements OnInit, AfterContentChecked {
       name: [null, [Validators.required, Validators.minLength(2)]],
       description: [null],
       type: [null, [Validators.required]],
-      aumount: [null, [Validators.required]],
-      date: [null, [Validators.required]],
+      amount: [null, [Validators.required]],
+      date: ['10/10/2000', [Validators.required]],
       paid: [null, [Validators.required]],
       categoryId: [null, [Validators.required]],
     });
