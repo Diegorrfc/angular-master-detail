@@ -8,7 +8,7 @@ import { HttpClientInMemoryWebApiModule } from 'angular-in-memory-web-api';
 import { InMemoryDataBase } from './in-memory-database';
 import { HttpClientModule } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { EntriesModule } from './pages/entries/entries/entries.module';
+import { EntriesModule } from './pages/entries/entries.module';
 
 @NgModule({
   declarations: [AppComponent],

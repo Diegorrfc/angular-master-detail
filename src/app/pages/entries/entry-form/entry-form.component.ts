@@ -3,9 +3,11 @@ import { EntryService } from '../shared/entry.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { switchMap } from 'rxjs/operators';
-import { Entry } from '../shared/entry.model';
 import toastr from 'toastr';
 import IMask from 'imask';
+import { Entry } from '../shared/entry.model';
+import { Category } from '../../categories/shared/category.model';
+import { CategoryService } from '../../categories/shared/category.service';
 @Component({
   selector: 'app-entry-form',
   templateUrl: './entry-form.component.html',
@@ -18,6 +20,7 @@ export class EntryFormComponent implements OnInit, AfterContentChecked {
   pageTitle: string;
   submitFormButton: boolean;
   serverErrorMessage: string[];
+  categories: Category[];
   kl: any;
   imaskConfig = {
     mask: Number,
@@ -32,7 +35,8 @@ export class EntryFormComponent implements OnInit, AfterContentChecked {
     private entryService: EntryService,
     private router: Router,
     private activetedRoute: ActivatedRoute,
-    private formBuilder: FormBuilder
+    private formBuilder: FormBuilder,
+    private cattegoryService: CategoryService
   ) {}
 
   ngOnInit(): void {
@@ -40,6 +44,7 @@ export class EntryFormComponent implements OnInit, AfterContentChecked {
     this.builEntryForm();
     this.loadEntry();
     this.teste();
+    this.setCategories();
   }
   ngAfterContentChecked(): void {
     this.setPageTitle();
@@ -55,6 +60,10 @@ export class EntryFormComponent implements OnInit, AfterContentChecked {
     });
   }
 
+  setPaid() {
+    this.entryForm.get('paid').setValue(false);
+    console.log(this.entryForm.get('paid').value);
+  }
   private setCurrentAction() {
     // tslint:disable-next-line: triple-equals
     if (this.activetedRoute.snapshot.url[0].path == 'new') {
@@ -63,15 +72,27 @@ export class EntryFormComponent implements OnInit, AfterContentChecked {
       this.currentAction = 'edit';
     }
   }
+
+  setCategories() {
+    this.cattegoryService
+      .getAll()
+      .subscribe((categories) => (this.categories = categories));
+  }
+
+  get Options(): Array<any> {
+    return Object.entries(Entry.type).map(([id, name]) => {
+      return { text: id, value: name };
+    });
+  }
   private builEntryForm() {
     this.entryForm = this.formBuilder.group({
       id: [null],
       name: [null, [Validators.required, Validators.minLength(2)]],
       description: [null],
-      type: [null, [Validators.required]],
+      type: ['expense', [Validators.required]],
       amount: [null, [Validators.required]],
       date: ['10/10/2000', [Validators.required]],
-      paid: [null, [Validators.required]],
+      paid: [true, [Validators.required]],
       categoryId: [null, [Validators.required]],
     });
   }
@@ -92,7 +113,7 @@ export class EntryFormComponent implements OnInit, AfterContentChecked {
   private setPageTitle() {
     // tslint:disable-next-line: triple-equals
     if (this.currentAction == 'edit') {
-      this.pageTitle = 'Editar';
+      this.pageTitle = 'Editar ' + this.entry.name;
     } else {
       this.pageTitle = 'criar';
     }
